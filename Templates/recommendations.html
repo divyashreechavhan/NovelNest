@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   
+    <!-- Latest compiled and minified CSS -->
+    <title>NovelNest</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Include Custom CSS -->
+  <link rel="stylesheet" href="Stylesheet\home.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+
+{% if current_user.is_authenticated %}
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="#">NovelNest</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="/recommend">Recommend</a>
+          </li>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" style="padding-left: 900px; padding-right: 20px;" href="/profile"><i class="fa-solid fa-user fa-fade fa-xl"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket  fa-xl"></i></a>
+            </li>
+          </ul>
+        </ul>
+      </div>
+    </div>
+  </nav>
+       
+<body >
+
+
+  <div class="container">
+    <div class="row">
+      
+        
+        <!-- Display Live Recommendations -->
+        <h1>Live Recommendations</h1>
+        <div class="row">
+            {% if recommended_books %}
+                {% for recommendation in recommended_books %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <img class="card-img-top" src="{{ recommendation[2] }}">
+                                <p>{{ recommendation[0] }}</p>
+                                <p>{{ recommendation[1] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No live recommendations available.</p>
+            {% endif %}
+        </div>
+  
+
+        <div class="col-md-12">
+          <h1 class="text-white" style="font-size:50px">Recommend Books</h1>
+          <form action="/recommend" method="post">
+              <input name="user_input" type="text" class="form-control"><br>
+              <input type="submit" class="btn btn-lg btn-warning">
+          </form>
+      </div>
+        <!-- Display Similar Books -->
+        <h1>Similar Books</h1>
+        <div class="row">
+            {% if data %}
+                {% for item in data %}
+                    <div class="col-md-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <img class="card-img-top" src="{{ item[2] }}">
+                                <p>{{ item[0] }}</p>
+                                <p>{{ item[1] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No similar books available.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+</body>
+{% else %}
+        <p><a href="{{ url_for('login') }}">Login First</a> or <a href="{{ url_for('signup') }}">Signup First</a></p>
+    
+
+{% endif %}
+</html>

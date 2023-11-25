@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Popular Books</title>
+</head>
+<body>
+    <h1>Popular Books</h1>
+    <div class="row">
+        {% for i in range(book_name|length) %}
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="card-img-top" src="{{ image[i] }}">
+                        <h5 class="card-title">{{ book_name[i] }}</h5>
+                        <p class="card-text">Author: {{ author[i] }}</p>
+                        <p class="card-text">Votes: {{ votes[i] }}</p>
+                        <p class="card-text">Average Rating: {{ avg_rating[i] }}</p>
+                        <p class="card-text">
+                            User Ratings: {{avg_user_ratings[i]}}<br>
+                            <form method="post" action="{{ url_for('rate_book') }}">
+                                <input type="hidden" name="book_title" value="{{ book_name[i] }}">
+                                <input type="number" step="0.1" min="0" max="10" name="rating" placeholder="Rate">
+                                <button type="submit">Rate</button>
+                            </form>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

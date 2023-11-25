@@ -1,0 +1,381 @@
+
+<!-- profile.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Include Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Include Custom CSS -->
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <title>NovelNest Profile</title>
+    <style>
+        body {
+            /* f4f4f8 */
+            background-color: #F5F5DC;
+        }
+
+        body {
+            background: linear-gradient(to bottom, #f4f4f8, #e3e3f9);
+
+        }
+
+
+
+        .navbar-custom {
+            background-color: #292b2c;
+            /* Dark background color */
+        }
+
+        .navbar-brand {
+            font-size: 24px;
+            color: #fff;
+            /* White color */
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .navbar-brand:hover {
+            color: #f39c12;
+            /* Orange color on hover */
+        }
+
+        .nav-link {
+            color: #fff;
+            font-weight: bold;
+            transition: color 0.3s ease-in-out;
+        }
+
+        .nav-link:hover {
+            color: #f39c12;
+            /* Orange color on hover */
+        }
+
+        .card-img-top {
+            height: 200px;
+            /* Adjust this value to your desired image height */
+            object-fit: cover;
+        }
+
+        .rated-books {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .rated-books li {
+            background-color: #f5f5f5;
+            margin: 5px;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .book-title {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .rating {
+            background-color: #FFD700;
+            color: #fff;
+            padding: 5px 10px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+
+
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" href="/home">NovelNest</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/recommend">Recommend</a>
+                    </li>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link" style="padding-left: 900px; padding-right: 20px;" href="/profile"><i
+                                    class="fa-solid fa-user fa-fade fa-xl"></i></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}"><i
+                                    class="fa-solid fa-right-from-bracket  fa-xl"></i></a>
+                        </li>
+                    </ul>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+<div class="container mt-4">
+        <h1>Welcome, {{ current_user.username }}</h1>
+        <p class="card-text">Welcome to NovelNest! We're thrilled to have you as part of our community of book
+            enthusiasts. Explore our collection of amazing books, discover new favorites, and connect with fellow
+            readers. Your journey into the world of literature begins here.</p>
+
+        <!-- <h3>Your Saved Books:</h3>
+        {% for interaction in interactions %}
+        {% if interaction.interaction_type == 'saved' %}
+        <p>{{ interaction.book_title }} - {{ interaction.interaction_type }}</p>
+        {% endif %}
+        {% if interaction.interaction_type == 'saved' %}
+        <form action="{{ url_for('remove_saved_book') }}" method="post">
+            <input type="hidden" name="book_title" value="{{ interaction.book_title }}">
+            <button type="submit">Remove from Saved</button>
+        </form>
+        {% endif %}
+        {% endfor %}
+
+        <h3>Your rated Books:</h3>
+        <ul>
+            {% for interaction in current_user.interactions if interaction.interaction_type == 'rated' %}
+            <li>{{ interaction.book_title }}</li>
+            {% endfor %}
+        </ul> -->
+
+
+        <h3 style="padding-bottom: 3%;">Your Saved Books:</h3>
+        <h1></h1>
+        <div id="savedBooksCarousel" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                {% for interaction in interactions %}
+                {% if interaction.interaction_type == 'saved' %}
+                {% if loop.index0 % 3 == 0 %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row" style="margin-left: 130px; margin-right: 90px;">
+                        {% endif %}
+                        <div class="col-md-4">
+                            <div class="card" style="width: 18rem; height:8rem;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ interaction.book_title }}</h5>
+                                    <!-- <p class="card-text">{{ interaction.interaction_type }}</p> -->
+                                    <form action="{{ url_for('remove_saved_book') }}" method="post">
+                                        <input type="hidden" name="book_title" value="{{ interaction.book_title }}">
+                                        <button type="submit" class="btn btn-danger">Remove</button>
+                                    </form>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        {% if loop.index % 3 == 0 or loop.last %}
+
+                    </div>
+                </div>
+                {% endif %}
+                {% endif %}
+                {% endfor %}
+            </div>
+            <a class="carousel-control-prev" href="#savedBooksCarousel" role="button" data-bs-slide="carousel">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#savedBooksCarousel" role="button" data-bs-slide="carousel">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </a>
+
+
+
+        </div>
+        <br>
+        <br>
+        <div>
+            <h3>Your rated Books:</h3>
+            <ul class="rated-books">
+                {% for interaction in current_user.interactions if interaction.interaction_type == 'rating' %}
+                <li>
+                    <span class="book-title">{{ interaction.book_title }}</span>
+                    <span class="rating">{{ interaction.rating }}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+
+<!-- Include Bootstrap JavaScript and jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html> 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ <!-- profile.html 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NovelNest</title>
+  Include Bootstrap CSS 
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   Include Custom CSS 
+  <link rel="stylesheet" href="Stylesheet\home.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+</head>
+<nav>
+    
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+          <a class="navbar-brand" href="#">NovelNest</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="/home">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link"  href="/recommend">Recommend</a>
+              </li>
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" style="padding-left: 900px; padding-right: 20px;" href="/profile"><i class="fa-solid fa-user fa-fade fa-xl"></i></a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket  fa-xl"></i></a>
+                </li>
+              </ul>
+            </ul>
+          </div>
+        </div>
+      </nav>
+</nav>
+
+<body>
+    <h1>Welcome, {{ current_user.username }}!</h1>
+    
+    <!-- Display User's Preferred Genres
+    <p>Preferred Genres: {{ current_user.preferred_genres }}</p>
+
+    <!-- Display User's Saved Books 
+    <h3>Your Saved Books:</h3>
+ {% for interaction in interactions %}
+    {% if interaction.interaction_type == 'saved' %}
+    
+    <p>{{ interaction.book_title }} - {{ interaction.interaction_type }}</p>
+    {% endif %}
+    {% if interaction.interaction_type == 'saved' %}
+        <form action="{{ url_for('remove_saved_book') }}" method="post">
+            <input type="hidden" name="book_title" value="{{ interaction.book_title }}">
+            <button type="submit">Remove from Saved</button>
+        </form>
+    {% endif %}
+{% endfor %}
+
+    <h3>Your rated Books:</h3>
+    <ul>
+        {% for interaction in current_user.interactions if interaction.interaction_type == 'rated' %}
+        <li>{{ interaction.book_title }} - {{ interaction.rating }}</li>
+        {% endfor %}
+    </ul>
+    <h3>Your liked Books:</h3>
+    <ul>
+        {% for interaction in current_user.interactions if interaction.interaction_type == 'liked' %}
+        <li>{{ interaction.book_title }}</li>
+        {% endfor %}
+    </ul>
+   
+    
+    <!-- Display live recommendations based on interactions 
+    <h2>Live Recommendations</h2>
+   
+    <div class="row">
+        
+            {% for recommendation in recommended_books %}
+                <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <img class="card-img-top" src="{{ recommendation[2] }}">
+                            <p>{{ recommendation[0] }}</p>
+                            <p>{{ recommendation[1] }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        
+    </div>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html> 
+-->

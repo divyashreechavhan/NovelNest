@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NovelNest</title>
+  <!-- Include Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Include Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container">
+      <a class="navbar-brand" href="#">NovelNest</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link"  href="/recommend">Recommend</a>
+          </li>
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" style="padding-left: 900px; padding-right: 20px;" href="/profile"><i class="fa-solid fa-user fa-fade fa-xl"></i></a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('logout') }}"><i class="fa-solid fa-right-from-bracket  fa-xl"></i></a>
+            </li>
+          </ul>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 style="font-size: 50px;">Welcome to NovelNest</h1>
+    <p>Here is our top 50 collections.</p>
+  </div>
+
+
+  <section style="padding: 4%;">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+      <!-- Card for each book -->
+      {% for i in range(book_name | length) %}
+      <div class="col">
+        <div class="card h-80">
+          <img src="{{ image[i] }}" class="card-img-top" alt="Book 1">
+          <div class="card-body">
+            <h5 class="card-title">{{ book_name[i] }}</h5>
+            <p class="card-text">{{ author[i] }}</p>
+            <div class="d-flex align-items-center">
+              <span class="badge rounded-pill bg-success me-2"><i class="fas fa-star me-1"></i>{{ rating[i] }}</span>
+              <span class="badge rounded-pill bg-primary"><i class="fas fa-thumbs-up me-1"></i> {{ votes[i] }}</span>
+            </div>
+            
+
+
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <form  method="post" action="{{ url_for('record_interaction') }}">
+                <input type="hidden" name="book_title" value="{{ book_name[i] }}">
+                <input type="hidden" name="book_image" value="{{ image[i] }}"> 
+                <input type="hidden" name="interaction_type" value="saved">
+                <button class="btn btn-primary save-btn" type="submit">Save</button>
+              </form>
+
+                                        
+              <!--<button class="btn btn-outline-primary like-btn" data-book-id="{{ book_id }}"><i class="far fa-heart"></i></button>-->             
+              <form method="post" action="{{ url_for('record_interaction') }}">
+                <input type="hidden" name="book_title" value="{{ book_name[i] }}">
+                <input type="hidden" name="interaction_type" value="rating">
+            
+                <!-- Button to open the dropdown -->
+                <div class="dropdown">
+                    <button class="btn btn-outline-primary like-btn dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Rate
+                    </button>
+                    <div class="dropdown-menu">
+                        <!-- Add dropdown items for each rating value -->
+                        <button class="dropdown-item" type="submit" name="rating" value="1">1</button>
+                        <button class="dropdown-item" type="submit" name="rating" value="2">2</button>
+                        <button class="dropdown-item" type="submit" name="rating" value="3">3</button>
+                        <button class="dropdown-item" type="submit" name="rating" value="4">4</button>
+                        <button class="dropdown-item" type="submit" name="rating" value="5">5</button>
+                    </div>
+                </div>
+            </form>
+            
+            
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      {% endfor %}
+  </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+document.addEventListener('DOMContentLoaded', () => {
+  const stars = document.querySelectorAll('.star-rating .star');
+
+  stars.forEach(star => {
+    star.addEventListener('click', () => {
+      const rating = star.getAttribute('data-rating');
+      stars.forEach(s => s.classList.remove('active'));
+      star.classList.add('active');
+      document.querySelector('input[name="rating"]').value = rating;
+    });
+  });
+});
+-->
